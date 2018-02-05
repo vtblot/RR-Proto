@@ -11,6 +11,8 @@ public class LazersPath
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+
+    [HideInInspector]
     public string currentScene;
 
     public Transform playerPosition;

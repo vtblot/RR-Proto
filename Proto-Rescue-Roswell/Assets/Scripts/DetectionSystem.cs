@@ -12,6 +12,8 @@ public class DetectionSystem : MonoBehaviour
         {
             if (GameManager.instance.currentScene == "MazeScene")
             {
+
+                FindObjectOfType<AudioManager>().Play("MazeDetectorImpact");
                 other.transform.position = GameManager.instance.playerStartingPos;
                 GameManager.instance.GeneratePath();
             }
@@ -19,7 +21,8 @@ public class DetectionSystem : MonoBehaviour
             {
                 if (gameObject.tag == "XrayActivator")
                 {
-                        GameManager.instance.RenderXRays();
+                    FindObjectOfType<AudioManager>().Play("XrayActivatorEnter");
+                    GameManager.instance.RenderXRays();
                    
                 }
             }
@@ -35,6 +38,7 @@ public class DetectionSystem : MonoBehaviour
             {
                 if (gameObject.tag == "XrayActivator")
                 {
+                    FindObjectOfType<AudioManager>().Play("XrayActivatorExit");
                     GameManager.instance.HideXRays();
 
                 }
@@ -51,6 +55,7 @@ public class DetectionSystem : MonoBehaviour
             {
                 if (gameObject.tag == "Laser")
                 {
+                    FindObjectOfType<AudioManager>().Play("LaserImpact");
                     collision.gameObject.transform.position = GameManager.instance.playerStartingPos;
                 }
             }
