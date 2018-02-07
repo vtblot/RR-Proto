@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LazersPath
 {
     public GameObject[] lazers;
+    public GameObject lastLaserForThisLevel;
 }
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer pathImage;
     public Renderer xRays;
 
+    private Vector3 lastKnownPosition;
+
+    public GameObject Tip;
+    private float tipDisplayTimer = 3f;
+    
+    [HideInInspector]
+    public bool playerLost = false;
+
     void Awake()
     {
         currentScene = SceneManager.GetActiveScene().name;
@@ -36,36 +45,77 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(ShowTip());
         playerStartingPos = playerPosition.position;
+        lastKnownPosition = playerPosition.position;
+        nbPath = 0;
         if (currentScene == "MazeScene")
-            GeneratePath();
+            GeneratePathSprite();
     }
 
-    public void GeneratePath()
+    private void Update()
     {
-
-        nbPath = Random.Range(0, lazersPath.Length);
-
-        foreach (var item in lazersPath)
+        if(Input.GetKeyDown(KeyCode.R))
         {
-            foreach (var lzr in item.lazers)
-            {
-                if (!lzr.activeInHierarchy)
-                    lzr.SetActive(true);
-            }
+            SetPlayerPosition(lastKnownPosition);
         }
+    }
+
+    public void CheckPath(GameObject md)
+    {
+        bool isInPath = false;
 
         foreach (var item in lazersPath[nbPath].lazers)
         {
-            item.SetActive(false);
+            if(item == md)
+            {
+                isInPath = true;
+                lastKnownPosition = item.transform.position;
+                break;
+            }
         }
-        GeneratePathSprite();
+        
+        if(isInPath)
+        {
+            if(md == lazersPath[nbPath].lastLaserForThisLevel)
+            {
+                nbPath++;
+                SetPlayerPosition(playerStartingPos);
+                CheckGameEnd();
+            }
+        }
+        else
+        {
+            StartCoroutine(ShowTip());
+            FindObjectOfType<AudioManager>().Play("MazeDetectorImpact");
+            SetPlayerPosition(playerStartingPos);
+        }
+    }
+    
+    private void CheckGameEnd()
+    {
+        if(lazersPath.Length > nbPath)
+        {
+            Debug.Log("GameFinished");
+        }
+    }
+
+    IEnumerator ShowTip()
+    {
+        Tip.SetActive(true);
+        yield return new WaitForSeconds(tipDisplayTimer);
+        Tip.SetActive(false);
+    }
+
+    private void SetPlayerPosition(Vector3 position)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = position;
     }
 
     private void GeneratePathSprite()
     {
         pathImage.sprite = sprites[nbPath];
-        // currentSprite = ;
     }
 
     public void RenderXRays()

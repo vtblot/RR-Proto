@@ -12,10 +12,7 @@ public class DetectionSystem : MonoBehaviour
         {
             if (GameManager.instance.currentScene == "MazeScene")
             {
-
-                FindObjectOfType<AudioManager>().Play("MazeDetectorImpact");
-                other.transform.position = GameManager.instance.playerStartingPos;
-                GameManager.instance.GeneratePath();
+                GameManager.instance.CheckPath(gameObject);
             }
             if (GameManager.instance.currentScene == "LaserRoom")
             {
