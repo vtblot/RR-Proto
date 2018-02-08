@@ -94,9 +94,13 @@ public class GameManager : MonoBehaviour
     
     private void CheckGameEnd()
     {
-        if(lazersPath.Length > nbPath)
+        if (lazersPath.Length == nbPath)
         {
             Debug.Log("GameFinished");
+        }
+        else
+        {
+            GeneratePathSprite();
         }
     }
 
