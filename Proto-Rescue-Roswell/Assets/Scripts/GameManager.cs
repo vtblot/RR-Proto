@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
             if(md == lazersPath[nbPath].lastLaserForThisLevel)
             {
                 nbPath++;
+                lastKnownPosition = playerStartingPos;
                 SetPlayerPosition(playerStartingPos);
                 CheckGameEnd();
             }
@@ -94,11 +95,7 @@ public class GameManager : MonoBehaviour
     
     private void CheckGameEnd()
     {
-        if (lazersPath.Length == nbPath)
-        {
-            Debug.Log("GameFinished");
-        }
-        else
+        if (lazersPath.Length != nbPath)
         {
             GeneratePathSprite();
         }

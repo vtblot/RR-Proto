@@ -7,6 +7,7 @@ public class MenuSuccess : MonoBehaviour
 {
     public void MenuButton()
     {
+        FindObjectOfType<AudioManager>().Play("Bouton");
         SceneManager.LoadScene("Scenes/StartMenu");
     }
 

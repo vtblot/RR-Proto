@@ -7,7 +7,9 @@ public class AudioManager : MonoBehaviour {
 
     public Sound[] sounds;
 
-     void Awake()
+    string scene;
+
+    void Awake()
     {
         foreach (Sound s in sounds)
         {
@@ -20,11 +22,18 @@ public class AudioManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		/*if(GameManager.instance.currentScene == "LaserRoom")
+        /*if(GameManager.instance.currentScene == "LaserRoom")
         {
             Play("LaserSound");
         }*/
-	}
+        scene = SceneManager.GetActiveScene().name;
+        if (scene == "StartMenu")
+        {
+            Play("Theme");
+        }
+
+
+    }
 
     public void Play(string name)
     {

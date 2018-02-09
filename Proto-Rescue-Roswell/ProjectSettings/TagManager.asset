@@ -9,6 +9,7 @@ TagManager:
   - Laser
   - Fire
   - AudioManager
+  - SuccessCanvas
   layers:
   - Default
   - TransparentFX
